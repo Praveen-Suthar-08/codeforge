@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>CodeForge – Coding Practice Platform</title>
+  <style>
+    :root {
+      --bg: #f6f7fb;
+      --sf: #fff;
+      --tx: #1b1f2a;
+      --mu: #667085;
+      --bd: #e3e6ee;
+      --ac: #4f46e5;
+      --ac2: #0891b2;
+      --ok: #15803d;
+      --er: #b91c1c;
+      --wa: rgb(84, 38, 6);
+      --cd: #f0f2f8;
+      box-sizing: border-box;
+      padding-top: env(safe-area-inset-top, 0px);
+      padding-bottom: env(safe-area-inset-bottom, 0px)
+    }
+
+    @media(prefers-color-scheme:dark) {
+      :root:not([data-theme="light"]) {
+        --bg: #0d1117;
+        --sf: #161b22;
+        --tx: #e6edf3;
+        --mu: #8b949e;
+        --bd: #30363d;
+        --ac: #3fb950;
+        --ac2: #58a6ff;
+        --ok: #3fb950;
+        --er: #f85149;
+        --wa: #d29922;
+        --cd: #0d1117;
+        color-scheme: dark
+      }
+    }
+
+    :root[data-theme="dark"] {
+      --bg: #0d1117;
+      --sf: #161b22;
+      --tx: #e6edf3;
+      --mu: #8b949e;
+      --bd: #30363d;
+      --ac: #3fb950;
+      --ac2: #58a6ff;
+      --ok: #3fb950;
+      --er: #f85149;
+      --wa: #d29922;
+      --cd: #0d1117;
+      color-scheme: dark
+    }
+
+    html {
+      scroll-padding-top: env(safe-area-inset-top, 0px)
+    }
+
+    * {
+      box-sizing: border-box
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--tx);
+      font: 15px/1.55 Inter, system-ui, -apple-system, "Segoe UI", sans-serif
+    }
+
+    .m {
+      font-family: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0 0 auto;
+      height: env(safe-area-inset-top, 0px);
+      background: var(--sf);
+      z-index: 30
+    }
+
+    nav {
+      position: sticky;
+      top: env(safe-area-inset-top, 0px);
+      z-index: 20;
+      background: var(--sf);
+      border-bottom: 1px solid var(--bd);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 20px;
+      flex-wrap: wrap
+    }
+
+    .logo {
+      font-weight: 700;
+      font-size: 18px;
+      color: var(--ac);
+      margin-right: 14px;
+      cursor: pointer
+    }
+
+    nav a {
+      color: var(--mu);
+      text-decoration: none;
+      padding: 6px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px
+    }
+
+    nav a.on,
+    nav a:hover {
+      background: var(--cd);
+      color: var(--tx)
+    }
+
+    .sp {
+      flex: 1
+    }
+
+    button {
+      font: inherit;
+      cursor: pointer;
+      border: 1px solid var(--bd);
+      background: var(--sf);
+      color: var(--tx);
+      padding: 7px 14px;
+      border-radius: 8px
+    }
+
+    button:hover {
+      border-color: var(--ac)
+    }
+
+    .pri {
+      background: var(--ac);
+      border-color: var(--ac);
+      color: #fff;
+      font-weight: 600
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px 20px 60px
+    }
+
+    .hero {
+      padding: 48px 0 28px
+    }
+
+    .hero h1 {
+      font-size: clamp(30px, 5vw, 52px);
+      line-height: 1.1;
+      margin: 0 0 14px
+    }
+
+    .hero p {
+      color: var(--mu);
+      max-width: 620px;
+      font-size: 17px
+    }
+
+    .hero .cta {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+      flex-wrap: wrap
+    }
+
+    .hero .cta button {
+      padding: 11px 22px
+    }
+
+    .term {
+      background: var(--cd);
+      border: 1px solid var(--bd);
+      border-radius: 12px;
+      padding: 16px;
+      margin-top: 28px;
+      max-width: 560px;
+      font-size: 13px;
+      overflow-x: auto
+    }
+
+    .g {
+      color: var(--ok)
+    }
+
+    .b {
+      color: var(--ac2)
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px;
+      margin-top: 26px
+    }
+
+    .card {
+      background: var(--sf);
+      border: 1px solid var(--bd);
+      border-radius: 12px;
+      padding: 18px
+    }
+
+    .card h3 {
+      margin: 0 0 6px;
+      font-size: 16px
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--mu);
+      font-size: 14px
+    }
+
+    .stat {
+      font-size: 30px;
+      font-weight: 700;
+      color: var(--ac)
+    }
+
+    .bar {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin: 14px 0
+    }
+
+    input,
+    select {
+      font: inherit;
+      background: var(--sf);
+      color: var(--tx);
+      border: 1px solid var(--bd);
+      padding: 8px 12px;
+      border-radius: 8px
+    }
+
+    .tw {
+      overflow-x: auto;
+      border: 1px solid var(--bd);
+      border-radius: 12px;
+      background: var(--sf)
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse
+    }
+
+    th,
+    td {
+      text-align: left;
+      padding: 11px 14px;
+      border-bottom: 1px solid var(--bd);
+      white-space: nowrap
+    }
+
+    th {
+      font-size: 12px;
+      color: var(--mu);
+      text-transform: uppercase;
+      letter-spacing: .05em
+    }
+
+    tr.row {
+      cursor: pointer
+    }
+
+    tr.row:hover {
+      background: var(--cd)
+    }
+
+    tr:last-child td {
+      border-bottom: 0
+    }
+
+    .tag {
+      display: inline-block;
+      font-size: 12px;
+      padding: 1px 8px;
+      border-radius: 99px;
+      background: var(--cd);
+      color: var(--mu);
+      margin-right: 4px
+    }
+
+    .Easy {
+      color: var(--ok)
+    }
+
+    .Medium {
+      color: var(--wa)
+    }
+
+    .Hard {
+      color: var(--er)
+    }
+
+    .ws {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 14px
+    }
+
+    @media(max-width:860px) {
+      .ws {
+        grid-template-columns: 1fr
+      }
+    }
+
+    .pane {
+      background: var(--sf);
+      border: 1px solid var(--bd);
+      border-radius: 12px;
+      padding: 16px;
+      min-width: 0
+    }
+
+    .pane h2 {
+      margin: 0 0 4px;
+      font-size: 21px
+    }
+
+    pre {
+      background: var(--cd);
+      border: 1px solid var(--bd);
+      border-radius: 8px;
+      padding: 10px;
+      overflow-x: auto;
+      margin: 8px 0;
+      font-size: 13px
+    }
+
+    textarea {
+      width: 100%;
+      height: 300px;
+      resize: vertical;
+      background: var(--cd);
+      color: var(--tx);
+      border: 1px solid var(--bd);
+      border-radius: 8px;
+      padding: 12px;
+      font: 13.5px/1.55 "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+      tab-size: 2
+    }
+
+    .out {
+      margin-top: 10px;
+      font-size: 13px;
+      max-height: 260px;
+      overflow: auto
+    }
+
+    .v {
+      font-weight: 700;
+      font-size: 16px;
+      margin-bottom: 6px
+    }
+
+    .tc {
+      padding: 6px 10px;
+      border-left: 3px solid var(--bd);
+      margin: 4px 0;
+      background: var(--cd);
+      border-radius: 0 6px 6px 0
+    }
+
+    .tc.p {
+      border-color: var(--ok)
+    }
+
+    .tc.f {
+      border-color: var(--er)
+    }
+
+    .hm {
+      display: grid;
+      grid-template-columns: repeat(28, 1fr);
+      gap: 3px;
+      margin-top: 10px
+    }
+
+    .hm i {
+      aspect-ratio: 1;
+      border-radius: 3px;
+      background: var(--cd);
+      border: 1px solid var(--bd)
+    }
+
+    .hm i.l1 {
+      background: color-mix(in srgb, var(--ac) 35%, var(--cd))
+    }
+
+    .hm i.l2 {
+      background: var(--ac)
+    }
+
+    .hint {
+      color: var(--mu);
+      font-size: 13px
+    }
+
+    .cw {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 14px
+    }
+
+    @media(max-width:860px) {
+      .cw {
+        grid-template-columns: 1fr
+      }
+    }
+
+    #cin {
+      height: 90px
+    }
+
+    .ic {
+      width: 38px;
+      height: 38px;
+      padding: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%
+    }
+
+    .ic svg {
+      width: 20px;
+      height: 20px
+    }
+
+    .cw.hid {
+      grid-template-columns: 1fr
+    }
+
+    .cw.hid #op {
+      display: none
+    }
+
+    .co {
+      background: var(--cd);
+      border: 1px solid var(--bd);
+      border-radius: 8px;
+      padding: 12px;
+      min-height: 150px;
+      max-height: 340px;
+      overflow: auto;
+      white-space: pre-wrap;
+      font-size: 13px;
+      margin: 0
+    }
+
+    .co .e {
+      color: var(--er)
+    }
+
+    .sm {
+      padding: 5px 10px;
+      font-size: 13px
+    }
+
+    footer {
+      text-align: center;
+      color: var(--mu);
+      font-size: 13px;
+      padding: 24px
+    }
+  </style>
+</head>
+
+<body>
+  <nav>
+    <span class="logo m" onclick="go('')">&lt;/&gt; CodeForge</span>
+    <a data-r="" onclick="go('')">Home</a><a data-r="problems" onclick="go('problems')">Problems</a><a data-r="compiler"
+      onclick="go('compiler')">Compiler</a><a data-r="dashboard" onclick="go('dashboard')">Dashboard</a><a
+      data-r="leaderboard" onclick="go('leaderboard')">Leaderboard</a>
+    <span class="sp"></span>
+    <button id="tg" class="ic" onclick="tgl()" aria-label="Switch light or dark mode"
+      title="Switch light / dark"></button>
+  </nav>
+  <main id="app"></main>
+  <footer class="m">CodeForge · all data stored locally in your browser · free &amp; open stack</footer>
+  <script>
+    /* ---------- Local DB (stored on this device only) ---------- */
+    const KEY = "codeforge_db_v1";
+    const blank = { user: "you", subs: [], drafts: {}, theme: null };
+    let db;
+    function load() { try { db = JSON.parse(localStorage.getItem(KEY)) || { ...blank } } catch (e) { db = { ...blank } } }
+    function save() { try { localStorage.setItem(KEY, JSON.stringify(db)) } catch (e) { } }
+    load();
+
+    /* ---------- Problems ---------- */
+    const P = [
+      { id: "two-sum", t: "Two Sum", d: "Easy", pts: 10, tags: ["array", "hash"], fn: "twoSum", desc: "Return the indices of the two numbers in <b>nums</b> that add up to <b>target</b>, as an array sorted ascending. Exactly one solution exists.", ex: "twoSum([2,7,11,15], 9) → [0,1]", st: "function twoSum(nums, target) {\n  // your code\n}", T: [[[[2, 7, 11, 15], 9], [0, 1]], [[[3, 2, 4], 6], [1, 2]], [[[3, 3], 6], [0, 1]], [[[1, 5, 8, 12, 3], 15], [3, 4]]] },
+      { id: "palindrome", t: "Valid Palindrome", d: "Easy", pts: 10, tags: ["string"], fn: "isPalindrome", desc: "Return true if the string reads the same forwards and backwards, ignoring case and non-alphanumeric characters.", ex: "isPalindrome('A man, a plan, a canal: Panama') → true", st: "function isPalindrome(s) {\n  // your code\n}", T: [[["A man, a plan, a canal: Panama"], true], [["race a car"], false], [[" "], true], [["No lemon, no melon"], true]] },
+      { id: "parentheses", t: "Valid Parentheses", d: "Easy", pts: 10, tags: ["stack", "string"], fn: "isValid", desc: "Given a string of ()[]{} characters, return true if every bracket is closed in the correct order.", ex: "isValid('([]{})') → true", st: "function isValid(s) {\n  // your code\n}", T: [[["()[]{}"], true], [["(]"], false], [["([)]"], false], [["{[]}"], true], [[""], true]] },
+      { id: "max-subarray", t: "Maximum Subarray", d: "Medium", pts: 20, tags: ["array", "dp"], fn: "maxSubArray", desc: "Return the largest sum of any contiguous subarray of <b>nums</b>.", ex: "maxSubArray([-2,1,-3,4,-1,2,1,-5,4]) → 6", st: "function maxSubArray(nums) {\n  // your code\n}", T: [[[[-2, 1, -3, 4, -1, 2, 1, -5, 4]], 6], [[[1]], 1], [[[5, 4, -1, 7, 8]], 23], [[[-3, -1, -2]], -1]] },
+      { id: "unique-substring", t: "Longest Unique Substring", d: "Medium", pts: 20, tags: ["string", "window"], fn: "lengthOfLongest", desc: "Return the length of the longest substring without repeating characters.", ex: "lengthOfLongest('abcabcbb') → 3", st: "function lengthOfLongest(s) {\n  // your code\n}", T: [[["abcabcbb"], 3], [["bbbbb"], 1], [["pwwkew"], 3], [[""], 0]] },
+      { id: "rain-water", t: "Trapping Rain Water", d: "Hard", pts: 40, tags: ["array", "two-pointers"], fn: "trap", desc: "Given elevation heights, return how much rain water is trapped between the bars.", ex: "trap([0,1,0,2,1,0,1,3,2,1,2,1]) → 6", st: "function trap(height) {\n  // your code\n}", T: [[[[0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1]], 6], [[[4, 2, 0, 3, 2, 5]], 9], [[[1, 2, 3]], 0], [[[]], 0]] }
+    ];
+    const BOTS = [["ada", 120], ["linus", 90], ["grace", 70], ["dennis", 50], ["ken", 30]];
+
+    /* ---------- Helpers ---------- */
+    const $ = s => document.querySelector(s);
+    const solved = () => new Set(db.subs.filter(s => s.v === "Accepted").map(s => s.pid));
+    const score = () => [...solved()].reduce((a, id) => a + P.find(p => p.id === id).pts, 0);
+    const esc = s => String(s).replace(/[&<>]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
+    function go(r) { location.hash = "#/" + r }
+    function theme() { return db.theme || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light") }
+    function applyTheme() { const t = theme(); document.documentElement.dataset.theme = t; $("#tg").innerHTML = t === "dark" ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>' : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>' }
+    function tgl() { db.theme = theme() === "dark" ? "light" : "dark"; save(); applyTheme() }
+
+    /* ---------- Judge (runs in your browser, with a time limit check) ---------- */
+    function judge(code, p, tests) {
+      const res = []; let verdict = "Accepted", tot = 0;
+      let f;
+      try { f = new Function(code + "\n;return " + p.fn + ";")() } catch (e) { return { v: "Compile Error", res: [], msg: e.message, ms: 0 } }
+      if (typeof f !== "function") return { v: "Compile Error", res: [], msg: "Function " + p.fn + " not found", ms: 0 };
+      for (const [args, exp] of tests) {
+        const t0 = performance.now(); let got, err;
+        try { got = f(...JSON.parse(JSON.stringify(args))) } catch (e) { err = e.message }
+        const ms = performance.now() - t0; tot += ms;
+        const ok = !err && JSON.stringify(got) === JSON.stringify(exp);
+        res.push({ args, exp, got, err, ok, ms });
+        if (!ok && verdict === "Accepted") verdict = err ? "Runtime Error" : "Wrong Answer";
+        if (ms > 2000) { verdict = "Time Limit Exceeded"; break }
+      }
+      return { v: verdict, res, ms: Math.round(tot) };
+    }
+
+    /* ---------- Views ---------- */
+    function home() {
+      const n = P.length, s = solved().size;
+      return `<section class="hero"><h1>Code. Run. <span style="color:var(--ac)">Ship.</span></h1>
+<p>Practice problems, run your code instantly and climb the leaderboard. Free stack, and your data never leaves this device.</p>
+<div class="cta"><button class="pri" onclick="go('problems')">Start solving →</button><button onclick="go('dashboard')">My dashboard</button></div>
+<div class="term m"><div><span class="g">$</span> codeforge run two-sum</div><div class="b">✔ 4/4 tests passed · 1ms</div><div><span class="g">$</span> codeforge rank</div><div class="b">You are #${rank()} with ${score()} pts</div></div></section>
+<div class="grid"><div class="card"><div class="stat">${n}</div><p>Problems across Easy, Medium and Hard</p></div><div class="card"><div class="stat">${s}</div><p>Solved by you so far</p></div><div class="card"><div class="stat">${score()}</div><p>Your points</p></div></div>
+<div class="grid">
+<div class="card"><h3>⚡ Instant judging</h3><p>Run on samples or submit against hidden tests with clear verdicts.</p></div>
+<div class="card"><h3>🌗 Light / Dark</h3><p>Developer-friendly themes that follow your system or your choice.</p></div>
+<div class="card"><h3>🗄️ Local database</h3><p>Submissions, drafts and settings are stored on your own system.</p></div>
+<div class="card"><h3>🏆 Leaderboard</h3><p>Earn 10 / 20 / 40 points for Easy / Medium / Hard.</p></div></div>`;
+    }
+    function rank() { const all = [...BOTS.map(b => b[1]), score()].sort((a, b) => b - a); return all.indexOf(score()) + 1 }
+
+    let F = { q: "", d: "", s: "" };
+    function problems() {
+      const sv = solved();
+      const rows = P.filter(p => (!F.q || (p.t + p.tags.join()).toLowerCase().includes(F.q.toLowerCase())) && (!F.d || p.d === F.d) && (!F.s || (F.s === "solved") === sv.has(p.id)))
+        .map((p, i) => `<tr class="row" onclick="go('problem/${p.id}')"><td>${sv.has(p.id) ? "✅" : "○"}</td><td>${p.t}</td><td class="${p.d}">${p.d}</td><td>${p.tags.map(t => `<span class="tag m">${t}</span>`).join("")}</td><td>${p.pts}</td></tr>`).join("");
+      return `<h1 style="margin-top:0">Problems</h1><div class="bar"><input id="fq" placeholder="Search title or tag…" value="${esc(F.q)}" oninput="F.q=this.value;fil()"><select onchange="F.d=this.value;fil()"><option value="">All levels</option><option>Easy</option><option>Medium</option><option>Hard</option></select><select onchange="F.s=this.value;fil()"><option value="">All status</option><option value="solved">Solved</option><option value="todo">Unsolved</option></select></div>
+<div class="tw"><table><thead><tr><th></th><th>Title</th><th>Level</th><th>Tags</th><th>Points</th></tr></thead><tbody>${rows || '<tr><td colspan="5" class="hint">No problems match.</td></tr>'}</tbody></table></div>`;
+    }
+    function fil() { const a = document.activeElement.id === "fq"; render(true); if (a) { const e = $("#fq"); e.focus(); e.setSelectionRange(99, 99) } }
+
+    let cur;
+    function workspace(id) {
+      const p = P.find(x => x.id === id); if (!p) return "<p>Not found.</p>"; cur = p;
+      const code = db.drafts[id] || p.st;
+      const hist = db.subs.filter(s => s.pid === id).slice(-5).reverse().map(s => `<div class="hint m">${new Date(s.at).toLocaleString()} · ${s.v}</div>`).join("") || '<div class="hint">No submissions yet.</div>';
+      return `<div class="ws"><div class="pane"><a style="color:var(--ac2);cursor:pointer" onclick="go('problems')">← Problems</a><h2>${p.t}</h2><div><span class="${p.d}">${p.d}</span> · ${p.pts} pts ${p.tags.map(t => `<span class="tag m">${t}</span>`).join("")}</div><p>${p.desc}</p><b>Example</b><pre class="m">${esc(p.ex)}</pre><div class="hint">Time limit 2s. Write a JavaScript function named <code>${p.fn}</code>.</div><h3>Recent submissions</h3>${hist}</div>
+<div class="pane"><div class="bar" style="margin-top:0"><span class="tag m">JavaScript</span><span class="sp"></span><button onclick="resetCode()">Reset</button><button onclick="runIt(false)">▶ Run (Ctrl+Enter)</button><button class="pri" onclick="runIt(true)">Submit</button></div>
+<textarea id="ed" spellcheck="false" aria-label="Code editor">${esc(code)}</textarea><div class="out" id="out"><span class="hint">Run to see results. Your draft autosaves locally.</span></div></div></div>`;
+    }
+    function bindEd() {
+      const e = $("#ed"); if (!e) return;
+      e.oninput = () => { db.drafts[cur.id] = e.value; save() };
+      e.onkeydown = k => {
+        if (k.key === "Tab") { k.preventDefault(); const s = e.selectionStart; e.setRangeText("  ", s, e.selectionEnd, "end"); e.oninput() }
+        if (k.key === "Enter" && (k.ctrlKey || k.metaKey)) { k.preventDefault(); runIt(k.shiftKey) }
+      };
+    }
+    function resetCode() { delete db.drafts[cur.id]; save(); $("#ed").value = cur.st }
+    function runIt(sub) {
+      const code = $("#ed").value, tests = sub ? cur.T : cur.T.slice(0, 2);
+      const r = judge(code, cur, tests);
+      if (sub) { db.subs.push({ pid: cur.id, v: r.v, at: Date.now(), code }); save() }
+      const col = r.v === "Accepted" ? "var(--ok)" : "var(--er)";
+      const pass = r.res.filter(x => x.ok).length;
+      $("#out").innerHTML = `<div class="v" style="color:${col}">${r.v}${sub ? "" : " (sample run)"}</div>${r.msg ? `<div class="tc f m">${esc(r.msg)}</div>` : ""}<div class="hint">${pass}/${r.res.length} tests passed · ${r.ms} ms</div>` + r.res.map((x, i) => `<div class="tc m ${x.ok ? "p" : "f"}">#${i + 1} ${x.ok ? "✔" : "✘"} input ${esc(JSON.stringify(x.args))}${x.ok ? "" : `<br>expected ${esc(JSON.stringify(x.exp))}, got ${esc(x.err ? x.err : JSON.stringify(x.got))}`}</div>`).join("");
+      if (sub && r.v === "Accepted") { const h = document.querySelectorAll(".pane")[0]; }
+    }
+    function dashboard() {
+      const sv = solved(), by = { Easy: 0, Medium: 0, Hard: 0 }; sv.forEach(id => by[P.find(p => p.id === id).d]++);
+      const day = 864e5, now = new Date().setHours(0, 0, 0, 0), cnt = {};
+      db.subs.forEach(s => { const k = Math.floor((new Date(s.at).setHours(0, 0, 0, 0) - now) / day); cnt[k] = (cnt[k] || 0) + 1 });
+      let streak = 0; while (cnt[-streak]) streak++;
+      let hm = ""; for (let i = -139; i <= 0; i++) { const c = cnt[i] || 0; hm += `<i class="${c > 2 ? "l2" : c ? "l1" : ""}" title="${c} submissions"></i>` }
+      return `<h1 style="margin-top:0">Dashboard</h1><div class="grid" style="margin-top:0"><div class="card"><div class="stat">${sv.size}/${P.length}</div><p>Solved</p></div><div class="card"><div class="stat">${score()}</div><p>Points</p></div><div class="card"><div class="stat">${streak}🔥</div><p>Day streak</p></div><div class="card"><div class="stat">${db.subs.length}</div><p>Total submissions</p></div></div>
+<div class="grid"><div class="card"><h3>By difficulty</h3><p><span class="Easy">Easy ${by.Easy}</span> · <span class="Medium">Medium ${by.Medium}</span> · <span class="Hard">Hard ${by.Hard}</span></p></div>
+<div class="card" style="grid-column:1/-1"><h3>Activity (last 20 weeks)</h3><div class="hm">${hm}</div></div>
+<div class="card" style="grid-column:1/-1"><h3>🗄️ Local database</h3><p>Everything is saved in this browser on your device (key <code class="m">${KEY}</code>). In the full project this is a SQLite file on your system.</p><div class="bar"><button onclick="expDb()">Export JSON</button><button onclick="if(confirm('Delete all local data?')){localStorage.removeItem(KEY);load();render()}">Reset data</button></div></div></div>`;
+    }
+    function expDb() { const a = document.createElement("a"); a.href = "data:application/json," + encodeURIComponent(JSON.stringify(db, null, 2)); a.download = "codeforge-db.json"; a.click() }
+    function leaderboard() {
+      const all = [...BOTS, ["you (me)", score()]].sort((a, b) => b[1] - a[1]);
+      return `<h1 style="margin-top:0">Leaderboard</h1><div class="tw"><table><thead><tr><th>#</th><th>User</th><th>Points</th></tr></thead><tbody>${all.map((u, i) => `<tr${u[0] === "you (me)" ? ' style="background:var(--cd);font-weight:600"' : ""}><td>${i + 1}</td><td>${u[0]}</td><td>${u[1]}</td></tr>`).join("")}</tbody></table></div><p class="hint">Sample users are demo data. Solve problems to move up.</p>`;
+    }
+
+    /* ---------- Live Compiler ---------- */
+    const LANGS = {
+      javascript: {
+        n: "JavaScript (in-browser)", loc: 1, c: `const name = input();
+console.log("Hello, " + name + "!");
+`},
+      python: {
+        n: "Python 3 (in-browser, Skulpt)", loc: 1, c: `name = input()
+print("Hello,", name)
+for i in range(3):
+    print(i * i)
+`},
+      lua: {
+        n: "Lua (in-browser, Fengari)", loc: 1, c: `print("Hello from Lua!")
+for i = 1, 3 do print(i * i) end
+`},
+      "c++": {
+        n: "C++ (in-browser, JSCPP)", loc: 1, c: `#include <iostream>
+using namespace std;
+int main(){
+  string n; cin >> n;
+  cout << "Hello, " << n << endl;
+}
+`},
+      c: {
+        n: "C (in-browser, JSCPP)", loc: 1, c: `#include <stdio.h>
+int main(){
+  char n[50]; scanf("%49s", n);
+  printf("Hello, %s\n", n);
+}
+`},
+      java: {
+        n: "Java (remote)", c: `import java.util.*;
+public class Main {
+  public static void main(String[] a){
+    Scanner s = new Scanner(System.in);
+    System.out.println("Hello, " + s.next());
+  }
+}
+`},
+      go: {
+        n: "Go (remote)", c: `package main
+import "fmt"
+func main(){
+  var n string
+  fmt.Scan(&n)
+  fmt.Println("Hello,", n)
+}
+`},
+      rust: {
+        n: "Rust (remote)", c: `use std::io;
+fn main(){
+  let mut s = String::new();
+  io::stdin().read_line(&mut s).unwrap();
+  println!("Hello, {}", s.trim());
+}
+`},
+      typescript: {
+        n: "TypeScript (in-browser)", loc: 1, c: `const n: string = "CodeForge";
+console.log("Hello, " + n);
+`},
+      ruby: {
+        n: "Ruby (in-browser, Opal)", loc: 1, c: `puts "Hello from Ruby!"
+3.times { |i| puts i * i }
+`},
+      php: {
+        n: "PHP (remote)", c: `<?php
+$n = trim(fgets(STDIN));
+echo "Hello, $n\n";
+`},
+      bash: {
+        n: "Bash (remote)", c: `read n
+echo "Hello, $n"
+`},
+      csharp: {
+        n: "C# (remote)", c: `using System;
+class P { static void Main(){ Console.WriteLine("Hello, " + Console.ReadLine()); } }
+`}
+    };
+    db.cmp = db.cmp || { lang: "python", codes: {}, remote: "" };
+    function loadJs(u) { return new Promise((ok, no) => { const s = document.createElement("script"); s.src = u; s.onload = ok; s.onerror = () => no(new Error("Could not load " + u)); document.head.appendChild(s) }) }
+    async function ensureSk() { if (window.Sk) return; const b = "https://cdn.jsdelivr.net/npm/skulpt@1.2.0/dist/"; await loadJs(b + "skulpt.min.js"); await loadJs(b + "skulpt-stdlib.js") }
+    function compiler() {
+      const C = db.cmp, l = C.lang, code = C.codes[l] ?? LANGS[l].c;
+      return `<h1 style="margin-top:0">Online Compiler</h1>
+<div class="bar"><select id="cl" aria-label="Language">${Object.keys(LANGS).map(k => `<option value="${k}"${k === l ? " selected" : ""}>${LANGS[k].n}</option>`).join("")}</select><span class="sp"></span><button class="sm" onclick="resetC()">Reset</button><button class="sm" id="ct" onclick="togC()">${C.hide ? "Show output" : "Hide output"}</button><button class="pri" onclick="runCode()">▶ Run (Ctrl+Enter)</button></div>
+<div class="cw${C.hide ? " hid" : ""}" id="cw"><div class="pane"><textarea id="ced" spellcheck="false" aria-label="Code" style="height:380px">${esc(code)}</textarea><b style="display:block;margin-top:10px">Input (stdin)</b><textarea id="cin" spellcheck="false" placeholder="One value per line">${esc(C.stdin || "CodeForge")}</textarea></div>
+<div class="pane" id="op"><b>Output <span id="cm" class="hint m"></span></b><pre class="co m" id="cout" style="margin-top:8px;min-height:380px;max-height:560px">Press Run to execute.</pre></div></div>
+<div class="pane" style="margin-top:14px"><b>Remote runner</b> <span class="hint">(Java, Go, Rust, PHP, Bash, C#)</span>
+<p class="hint" style="margin:6px 0">JavaScript, TypeScript, Python, C, C++, Lua and Ruby run right here in your browser. Java, Go, Rust, PHP, Bash and C# need a free <a href="https://github.com/engineer-man/piston" style="color:var(--ac2)">Piston</a> server (Docker: <code class="m">docker run -p 2000:2000 ghcr.io/engineer-man/piston</code>). Paste its address below. This works when you open the downloaded HTML file locally; this hosted page blocks calls to other servers.</p>
+<input id="cr" class="m" style="width:100%" placeholder="http://localhost:2000" value="${esc(C.remote || "")}"></div>`;
+    }
+    function bindC() {
+      const e = $("#ced"); if (!e) return;
+      $("#cl").onchange = ev => { db.cmp.lang = ev.target.value; save(); render(true) };
+      e.oninput = () => { db.cmp.codes[db.cmp.lang] = e.value; save() };
+      $("#cin").oninput = ev => { db.cmp.stdin = ev.target.value; save() };
+      $("#cr").oninput = ev => { db.cmp.remote = ev.target.value.trim(); save() };
+      e.onkeydown = k => {
+        if (k.key === "Tab") { k.preventDefault(); e.setRangeText("  ", e.selectionStart, e.selectionEnd, "end"); e.oninput() }
+        if (k.key === "Enter" && (k.ctrlKey || k.metaKey)) { k.preventDefault(); runCode() }
+      };
+    }
+    function togC() { db.cmp.hide = !db.cmp.hide; save(); $("#cw").classList.toggle("hid", db.cmp.hide); $("#ct").textContent = db.cmp.hide ? "Show output" : "Hide output" }
+    function resetC() { delete db.cmp.codes[db.cmp.lang]; save(); render(true) }
+    async function ensure(g, u) { if (window[g]) return; await loadJs(u) }
+    function runJs(src, lines) { let out = "", err = ""; const f = a => a.map(x => typeof x === "object" ? JSON.stringify(x) : String(x)).join(" ") + "\n"; const con = { log: (...a) => out += f(a), info: (...a) => out += f(a), warn: (...a) => out += f(a), error: (...a) => err += f(a) }; new Function("console", "input", src)(con, () => lines.length ? lines.shift() : ""); return [out, err] }
+    async function runCode() {
+      const l = db.cmp.lang, code = $("#ced").value, lines = $("#cin").value.split("\n"), o = $("#cout");
+      let out = "", err = ""; const t0 = performance.now(); if (db.cmp.hide) togC();
+      o.textContent = "Running…";
+      try {
+        if (l === "javascript") {
+          const f = a => a.map(x => typeof x === "object" ? JSON.stringify(x) : String(x)).join(" ") + "\n";
+          const con = { log: (...a) => out += f(a), info: (...a) => out += f(a), warn: (...a) => out += f(a), error: (...a) => err += f(a) };
+          new Function("console", "input", code)(con, () => lines.length ? lines.shift() : "");
+        } else if (l === "python") {
+          await ensureSk();
+          Sk.configure({ output: t => out += t, read: x => { if (!Sk.builtinFiles || !Sk.builtinFiles.files[x]) throw "File not found: " + x; return Sk.builtinFiles.files[x] }, inputfun: () => lines.length ? lines.shift() : "", inputfunTakesPrompt: false, __future__: Sk.python3, execLimit: 10000 });
+          await Sk.misceval.asyncToPromise(() => Sk.importMainWithBody("<stdin>", false, code, true));
+        } else if (l === "c" || l === "c++") {
+          await ensure("JSCPP", "https://cdn.jsdelivr.net/npm/JSCPP@2.0.9/dist/JSCPP.es5.min.js");
+          JSCPP.run(code.replace(/#include\s*<(\w+)\.h>/g, "#include <c$1>"), lines.join("\n"), { stdio: { write: s => out += s } });
+        } else if (l === "typescript") {
+          await ensure("ts", "https://cdnjs.cloudflare.com/ajax/libs/typescript/5.3.3/typescript.min.js");
+          const r = runJs(ts.transpile(code, { target: "ES2020" }), lines); out = r[0]; err += r[1];
+        } else if (l === "lua") {
+          await ensure("fengari", "https://cdn.jsdelivr.net/npm/fengari-web@0.1.4/dist/fengari-web.js");
+          const { lua, lauxlib, lualib } = fengari, J = s => fengari.to_jsstring(s), Z = s => fengari.to_luastring(s);
+          const L = lauxlib.luaL_newstate(); lualib.luaL_openlibs(L);
+          const strs = S => { const n = lua.lua_gettop(S), a = []; for (let i = 1; i <= n; i++)a.push(J(lauxlib.luaL_tolstring(S, i))); lua.lua_settop(S, 0); return a };
+          lua.lua_pushjsfunction(L, S => { out += strs(S).join("\t") + "\n"; return 0 }); lua.lua_setglobal(L, Z("print"));
+          lua.lua_getglobal(L, Z("io")); lua.lua_pushjsfunction(L, S => { out += strs(S).join(""); return 0 }); lua.lua_setfield(L, -2, Z("write")); lua.lua_pop(L, 1);
+          if (lauxlib.luaL_dostring(L, Z(code)) !== 0) err += J(lua.lua_tolstring(L, -1));
+        } else if (l === "ruby") {
+          await ensure("Opal", "https://cdnjs.cloudflare.com/ajax/libs/opal/1.8.2/opal.min.js");
+          if (!Opal.eval) await loadJs("https://cdnjs.cloudflare.com/ajax/libs/opal/1.8.2/opal-parser.min.js");
+          Opal.gvars.stdout.write_proc = s => out += s; Opal.gvars.stderr.write_proc = s => err += s;
+          Opal.eval(code);
+        } else {
+          const base = db.cmp.remote.replace(/\/+$/, "");
+          if (!base) throw new Error("Set the Remote runner address below (Piston server) to run " + LANGS[l].n + ".");
+          const r = await fetch(base + "/api/v2/execute", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ language: l, version: "*", files: [{ content: code }], stdin: lines.join("\n") }) });
+          const j = await r.json();
+          if (!r.ok) throw new Error(j.message || "Server error " + r.status);
+          if (j.compile && j.compile.code) err += j.compile.output; else { out = j.run.stdout; err = j.run.stderr }
+        }
+      } catch (e) { err += (e && e.message) ? e.message : String(e) }
+      const ms = Math.round(performance.now() - t0);
+      o.innerHTML = esc(out) + (err ? `<span class="e">${esc(err)}</span>` : "") || "(no output)";
+      $("#cm").textContent = "· " + ms + " ms · " + (err ? "error" : "ok");
+    }
+    /* ---------- Router ---------- */
+    function render(keep) {
+      const h = (location.hash || "#/").slice(2), [r, a] = h.split("/");
+      document.querySelectorAll("nav a").forEach(x => x.classList.toggle("on", x.dataset.r === (r === "problem" ? "problems" : r)));
+      const v = r === "" ? home() : r === "problems" ? problems() : r === "problem" ? workspace(a) : r === "compiler" ? compiler() : r === "dashboard" ? dashboard() : r === "leaderboard" ? leaderboard() : "<h1>404</h1><p>Page not found.</p>";
+      $("#app").innerHTML = v; bindEd(); bindC(); if (!keep) scrollTo(0, 0);
+    }
+    addEventListener("hashchange", () => render());
+    applyTheme(); render();
+  </script>
+</body>
+
+</html>
